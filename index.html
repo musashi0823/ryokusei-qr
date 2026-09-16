@@ -114,6 +114,29 @@ window.onload = function(){
 
 };
 
+async function checkIn(ticketId){
+
+  const response =
+    await fetch(
+      API_URL +
+      "?action=checkin&ticketId=" +
+      encodeURIComponent(ticketId)
+    );
+
+  const data =
+    await response.json();
+
+  document.getElementById("result").innerHTML =
+    "<h2>" +
+    data.visitorName +
+    "</h2>" +
+    "<h2>✅ 入場処理完了</h2>";
+
+}
+
+
+
+  
 </script>
 
 </body>
