@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>緑城祭QR</title>
+<title>緑城祭QR受付</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
@@ -22,8 +22,7 @@ body{
 
 #result{
   margin-top:20px;
-  font-size:22px;
-  font-weight:bold;
+  font-size:20px;
 }
 </style>
 
@@ -41,6 +40,9 @@ body{
 
 <script>
 
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwirUilo5wPWvvXFLG5Ai_wX4NDKNCr5GLJPFqW8ch9QPxqODBNcUoAeJHhwsh5e3RS/exec";
+
 window.onload = function(){
 
   const scanner =
@@ -52,20 +54,58 @@ window.onload = function(){
       fps:10,
       qrbox:250
     },
-    function(decodedText){
-
-      document.getElementById("result").innerHTML =
-        "読取成功<br>" + decodedText;
+    async function(decodedText){
 
       scanner.stop();
 
+      document.getElementById("result").innerHTML =
+        "検索中...";
+
+      const response =
+        await fetch(
+          API_URL +
+          "?ticketId=" +
+          encodeURIComponent(decodedText)
+        );
+
+      const data =
+        await response.json();
+
+      if(!data.found){
+
+        document.getElementById("result").innerHTML =
+          "チケットが見つかりません";
+
+        return;
+
+      }
+
+      let html =
+        "<h2>" +
+        data.visitorName +
+        "</h2>" +
+
+        "<p>区分：" +
+        data.category +
+        "</p>";
+
+      if(data.checkedIn){
+
+        html +=
+          "<h3 style='color:red'>⚠ 既に入場済です</h3>";
+
+      } else {
+
+        html +=
+          "<h3 style='color:green'>✅ 未入場</h3>";
+
+      }
+
+      document.getElementById("result").innerHTML =
+        html;
+
     }
-  ).catch(function(err){
-
-    document.getElementById("result").innerHTML =
-      "エラー<br>" + err;
-
-  });
+  );
 
 };
 
