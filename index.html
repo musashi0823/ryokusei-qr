@@ -2,27 +2,70 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>QRライブラリ確認</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>緑城祭QR</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body{
+  font-family:sans-serif;
+  text-align:center;
+  padding:20px;
+}
+
+#reader{
+  width:320px;
+  margin:auto;
+}
+
+#result{
+  margin-top:20px;
+  font-size:22px;
+  font-weight:bold;
+}
+</style>
 
 </head>
 
 <body>
 
-<h1>QRライブラリ確認</h1>
+<h2>緑城祭QR受付</h2>
+
+<div id="reader"></div>
 
 <div id="result">
-待機中
+カメラ起動中...
 </div>
 
 <script>
 
 window.onload = function(){
 
-  document.getElementById("result").innerHTML =
-    "Html5Qrcode = " +
-    typeof Html5Qrcode;
+  const scanner =
+    new Html5Qrcode("reader");
+
+  scanner.start(
+    { facingMode:"environment" },
+    {
+      fps:10,
+      qrbox:250
+    },
+    function(decodedText){
+
+      document.getElementById("result").innerHTML =
+        "読取成功<br>" + decodedText;
+
+      scanner.stop();
+
+    }
+  ).catch(function(err){
+
+    document.getElementById("result").innerHTML =
+      "エラー<br>" + err;
+
+  });
 
 };
 
