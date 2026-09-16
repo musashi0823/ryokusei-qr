@@ -2,19 +2,29 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>テスト</title>
+<title>QRライブラリ確認</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
 </head>
 
 <body>
 
-<h1>GitHub Pages テスト</h1>
+<h1>QRライブラリ確認</h1>
 
-<div id="result">待機中</div>
+<div id="result">
+待機中
+</div>
 
 <script>
 
-document.getElementById("result").innerHTML =
-  "JavaScript動作OK";
+window.onload = function(){
+
+  document.getElementById("result").innerHTML =
+    "Html5Qrcode = " +
+    typeof Html5Qrcode;
+
+};
 
 </script>
 
