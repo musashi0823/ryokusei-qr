@@ -89,17 +89,22 @@ window.onload = function(){
         data.category +
         "</p>";
 
-      if(data.checkedIn){
+     if(data.checkedIn){
 
-        html +=
-          "<h3 style='color:red'>⚠ 既に入場済です</h3>";
+  html +=
+    "<h3 style='color:red'>⚠ 既に入場済です</h3>";
 
-      } else {
+} else {
 
-        html +=
-          "<h3 style='color:green'>✅ 未入場</h3>";
+  html +=
+    "<h3 style='color:green'>✅ 未入場</h3>";
 
-      }
+  html +=
+    "<button onclick=\"checkIn('" +
+    data.ticketId +
+    "')\">入場処理</button>";
+
+}
 
       document.getElementById("result").innerHTML =
         html;
